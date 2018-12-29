@@ -2,12 +2,12 @@
   <div id="app">
     <Header :seller="seller"></Header>
     <div class="tab">
-      <div class="tab-item">商品</div>
-      <div class="tab-item">评价</div>
-      <div class="tab-item">详情</div>
+      <router-link to="/goods" tag="div" class="tab-item">商品</router-link>
+      <router-link to="/comments" tag="div" class="tab-item">评价</router-link>
+      <router-link to="/detail" tag="div" class="tab-item">详情</router-link>
     </div>
     <div class="content">
-      I am content
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -48,6 +48,7 @@ export default {
       width: 100%
       height: .8rem
       line-height: .8rem
+      border-bottom: 1px solid rgba(7,17,27,0.1)
       .tab-item
         flex: 1
         text-align: center

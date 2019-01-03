@@ -49,7 +49,10 @@ export default {
       height: .8rem
       line-height: .8rem
       border-bottom: 1px solid rgba(7,17,27,0.1)
+      color: rgb(77,85,93)
       .tab-item
         flex: 1
         text-align: center
+        &.router-link-active
+          color: red
 </style>

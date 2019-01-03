@@ -15,14 +15,22 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
-      <div v-if="seller.supports" class="supportCount">
+      <div v-if="seller.supports" class="supportCount" @click="showdetail">
         <span class="count">{{seller.supports.length}}个</span>
         <span class="iconfont">&#xe615;</span>
       </div>
     </div>
-    <div class="bwrapper">
+    <div class="bwrapper" @click="showdetail">
       <span class="noticeImg"></span>
-      <div class="notice">{{seller.bulletin}}</div>
+      <span class="notice">{{seller.bulletin}}</span>
+      <span class="iconfont texticon" >&#xe615;</span>
+    </div>
+    <div class="back">
+      <img :src="seller.avatar" width="100%" height="100%"/>
+    </div>
+    <div class="detail" v-show="detailshow">
+      <div class="detailWrapper clearfix"></div>
+      <div class="detailClose"></div>
     </div>
   </div>
 </template>
@@ -32,6 +40,16 @@ export default {
   name: "Header",
   props: {
     seller: Object
+  },
+  data() {
+    return {
+      detailshow: false
+    }
+  },
+  methods: {
+    showdetail() {
+      this.detailshow = true
+    }
   },
   created() {
     this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
@@ -43,9 +61,10 @@ export default {
 <style lang="stylus" scoped>
 @import "../../assets/styles/mixins.styl"
   .header
+    position: relative
     color: white
     background-color: rgba(7,17,27,0.5)
-    // filter: blur(1px)
+    overflow: hidden
     .wrapper
       position: relative
       padding: .48rem .24rem .36rem .48rem
@@ -118,23 +137,48 @@ export default {
           vertical-align: top
           font-size: .12rem
     .bwrapper
+      position: relative
       height: .56rem
+      line-height: .56rem
       padding: 0 .24rem
       background-color: rgba(7,17,27,0.2)
+      ellipsis()
       .noticeImg
         display: inline-block
-        float: left
+        vertical-align: top
         margin-top: .14rem
         width: .42rem
         height: .26rem
-        background-image: url("img/bulletin@2x.png")
+        bg-image("img/bulletin")
         background-size: .42rem .26rem
         background-repeat: no-repeat
       .notice
+        vertical-align: top
         line-height: .56rem
-        padding: 0 .08rem
+        margin: 0 .08rem
         font-size: .2rem
         color: rgb(255,255,255)
         font-weight: 200
-        ellipsis()
+      .texticon
+        position: absolute
+        font-size: .2rem
+        right: .1rem
+        top: 0
+    .back
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      z-index: -1
+      filter: blur(.1rem)
+    .detail
+      position: fixed
+      top: 0
+      left: 0
+      z-index: 100
+      width: 100%
+      height: 100%
+      overflow: auto
+      background-color: rgba(7,17,27,0.8)
 </style>

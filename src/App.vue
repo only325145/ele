@@ -14,7 +14,7 @@
 
 <script>
 import Axios from "axios";
-import Header from "./pages/header/Header.vue";
+import Header from "./components/header/Header.vue";
 export default {
   name: "app",
   data() {

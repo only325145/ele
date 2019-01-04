@@ -17,25 +17,23 @@
       </div>
       <div v-if="seller.supports" class="supportCount" @click="showdetail">
         <span class="count">{{seller.supports.length}}个</span>
-        <span class="iconfont">&#xe615;</span>
+        <span class="iconfont">&#xe74e;</span>
       </div>
     </div>
     <div class="bwrapper" @click="showdetail">
       <span class="noticeImg"></span>
       <span class="notice">{{seller.bulletin}}</span>
-      <span class="iconfont texticon" >&#xe615;</span>
+      <span class="iconfont more" >&#xe74e;</span>
     </div>
     <div class="back">
       <img :src="seller.avatar" width="100%" height="100%"/>
     </div>
-    <div class="detail" v-show="detailshow">
-      <div class="detailWrapper clearfix"></div>
-      <div class="detailClose"></div>
-    </div>
+    <Detail v-show="detailshow" :seller="seller" :classMap="classMap"  @close="closeDetail"></Detail>
   </div>
 </template>
 
 <script>
+import Detail from "./Detail.vue"
 export default {
   name: "Header",
   props: {
@@ -49,7 +47,13 @@ export default {
   methods: {
     showdetail() {
       this.detailshow = true
+    },
+    closeDetail() {
+      this.detailshow = false
     }
+  },
+  components: {
+    Detail
   },
   created() {
     this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
@@ -159,9 +163,9 @@ export default {
         font-size: .2rem
         color: rgb(255,255,255)
         font-weight: 200
-      .texticon
+      .more
         position: absolute
-        font-size: .2rem
+        font-size: .12rem
         right: .1rem
         top: 0
     .back
@@ -172,13 +176,5 @@ export default {
       height: 100%
       z-index: -1
       filter: blur(.1rem)
-    .detail
-      position: fixed
-      top: 0
-      left: 0
-      z-index: 100
-      width: 100%
-      height: 100%
-      overflow: auto
-      background-color: rgba(7,17,27,0.8)
+
 </style>

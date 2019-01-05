@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Goods from "./components/Goods.vue"
-import Comments from "./components/Comments.vue"
-import Detail from "./components/Detail.vue"
+import Goods from "./components/goods/Goods.vue"
+import Comments from "./components/comments/Comments.vue"
+import Detail from "./components/detail/Detail.vue"
 
 Vue.use(Router);
 

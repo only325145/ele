@@ -55,4 +55,5 @@ export default {
         text-align: center
         &.router-link-active
           color: red
+        
 </style>

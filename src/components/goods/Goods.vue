@@ -2,7 +2,7 @@
   <div class="goods">
     <div class="menu">
       <ul>
-        <li class="menuItem" v-for="(value,key) in goods" :key="key">
+        <li class="menuItem" v-for="(value,key) in goods" :key="key" @click="rightMach">
           <span class="text">
             <span v-show="value.type>-1" class="icon" :class="classMap[value.type]"></span>{{value.name}}
           </span>
@@ -12,7 +12,7 @@
     <div class="foods">
       <ul>
         <li v-for="(value,key) in goods" :key="key">
-          <h1 class="title">{{value.name}}</h1>
+          <h1 class="title" :ref="value.name">{{value.name}}</h1>
           <ul class="allFood">
             <li v-for="(food,key) in value.foods" :key="key" class="foodItem">
               <div class="icon">
@@ -40,30 +40,47 @@
 
 <script>
 import Axios from "axios";
+import BScroll from "better-scroll";
   export default {
     name: "goods",
     data() {
       return {
-        goods: []
+        goods: [],
+        touchStatus: false,
+        startY: 0,
       }
     },
     methods: {
-    getGoodsInfo() {
-      Axios.get("/data.json").then(this.getGoodsInfoSucc);
-    },
-    getGoodsInfoSucc(res) {
-      res = res.data;
-      if (res.ret && res.data) {
-        this.goods = res.data.goods;
+      getGoodsInfo() {
+        Axios.get("/data.json").then(this.getGoodsInfoSucc);
+      },
+      getGoodsInfoSucc(res) {
+        res = res.data;
+        if (res.ret && res.data) {
+          this.goods = res.data.goods;
+        }
+      },
+      rightMach(e) {
+        const item = e.target;
+        const itemText= e.target.innerText;
+        /* console.log(item);
+        console.log(this.$refs[item][0]) */
+        const element = this.$refs[itemText][0];  //this.$refs是一个对象，因为ref绑定的是循环的数据，所以this.$refs对象里面有全部的数据
+                                            //热销榜:"[xxx]",单人精彩套餐:"[xxx]",冰爽饮品限时特惠:"[xxx]"...    this.$refs[item][0]获取的是数组里面的DOM元素
+        this.scroll.scrollToElement(element);
+        const itemLi= e.target.parentNode;
+        itemLi.style.backgroundColor = "rgb(255,255,255)"
+        item.style.borderBottom = "none";
       }
-    }
-  },
-  created() {
-    this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
-    // class名称和每个特定图标编号相对应
-  },
+    },
+    created() {
+      this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
+      // class名称和每个特定图标编号相对应
+    },
     mounted() {
-    this.getGoodsInfo();
+      this.getGoodsInfo();
+      this.scroll = new BScroll(".menu", {click: true});
+      this.scroll = new BScroll(".foods", {click: true});
     }
   }
 </script>
@@ -81,6 +98,7 @@ import Axios from "axios";
       flex: 0 0 1.6rem
       width: 1.6rem
       background-color: #f3f5f7
+      overflow: hidden
       .menuItem
         display: table   //设置为table使得span里的文字可以垂直居中
         height: 1.08rem
@@ -129,7 +147,7 @@ import Axios from "axios";
           border-bottom: 1px solid rgba(7,17,27,0.1)
           &:last-child
             border-bottom: none
-            margin-bottom: none
+            margin-bottom: 0
           .icon
             flex: 0 0 1.14rem
             margin-right: .2rem
@@ -146,8 +164,8 @@ import Axios from "axios";
               font-size: .28rem
               color: rgb(7,17,27)
             .description,.extra
-              line-height: .2rem
-              font-size: .2rem
+              line-height: .24rem
+              font-size: .24rem
               color: rgb(147,153,159)
             .description
               margin-bottom: .16rem

@@ -9,12 +9,12 @@
         </li>
       </ul>
     </div>
-    <div class="foods">
+    <div class="foods" ref="food">
       <ul>
         <li v-for="(value,key) in goods" :key="key">
           <h1 class="title" :ref="value.name">{{value.name}}</h1>
           <ul class="allFood">
-            <li v-for="(food,key) in value.foods" :key="key" class="foodItem">
+            <li v-for="(food,key) in value.foods" :key="key" class="foodItem food-list-hook" ref="foodItem">
               <div class="icon">
                 <img :src="food.icon" />
               </div>
@@ -48,6 +48,21 @@ import BScroll from "better-scroll";
         goods: [],
         touchStatus: false,
         startY: 0,
+        listHeight: [],
+        scrollPosition: 0,
+      }
+    },
+    computed: {
+      currentIndex() {
+        for(let i = 0; i<listHeight.length; i++){
+          let top = listHeight[i];
+          let bottom = listHeight[i+1];
+          if(!bottom || (this.scrollPosition > top && this.scrollPosition < bottom))
+          {
+            return i;
+          }
+        }
+        return 0;
       }
     },
     methods: {
@@ -60,17 +75,29 @@ import BScroll from "better-scroll";
           this.goods = res.data.goods;
         }
       },
+      initScroll() {
+        this.menuScroll = new BScroll(".menu", { click: true});
+        this.foodScroll = new BScroll(".foods", {probeType: 3 ,click: true});
+        this.foodScroll.on("scroll", (pos)=> {    //better-scroll区域滚动时获取滚动的高度
+          this.scrollPosition = Math.abs(Math.round(pos.y));
+          
+        })
+      },
       rightMach(e) {
-        const item = e.target;
         const itemText= e.target.innerText;
-        /* console.log(item);
-        console.log(this.$refs[item][0]) */
         const element = this.$refs[itemText][0];  //this.$refs是一个对象，因为ref绑定的是循环的数据，所以this.$refs对象里面有全部的数据
                                             //热销榜:"[xxx]",单人精彩套餐:"[xxx]",冰爽饮品限时特惠:"[xxx]"...    this.$refs[item][0]获取的是数组里面的DOM元素
-        this.scroll.scrollToElement(element);
-        const itemLi= e.target.parentNode;
-        itemLi.style.backgroundColor = "rgb(255,255,255)"
-        item.style.borderBottom = "none";
+        this.foodScroll.scrollToElement(element);
+      },
+      calculateHeight() {
+        let foodList = this.$refs.food.querySelectorAll("food-list-hook");
+        let height = 0;
+        this.listHeight.push(height);
+        for(let i = 0; i<foodList.length; i++){
+          let item = foodList[i];
+          height += item.clientHeight;
+          this.listHeight.push(height);
+        }
       }
     },
     created() {
@@ -79,8 +106,8 @@ import BScroll from "better-scroll";
     },
     mounted() {
       this.getGoodsInfo();
-      this.scroll = new BScroll(".menu", {click: true});
-      this.scroll = new BScroll(".foods", {click: true});
+      this.initScroll();
+      this.calculateHeight();   //使用ref的元素要在mounted中，所以calculateHeight函数写在此处
     }
   }
 </script>

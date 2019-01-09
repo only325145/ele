@@ -2,19 +2,19 @@
   <div class="goods">
     <div class="menu">
       <ul>
-        <li class="menuItem" v-for="(value,key) in goods" :key="key" @click="rightMach">
+        <li class="menuItem" v-for="(value,key) in goods" :key="key" @click="rightMach(key,$event)" :class="{'selected': index1===key}">
           <span class="text">
             <span v-show="value.type>-1" class="icon" :class="classMap[value.type]"></span>{{value.name}}
           </span>
         </li>
       </ul>
     </div>
-    <div class="foods" ref="food">
-      <ul>
-        <li v-for="(value,key) in goods" :key="key">
+    <div class="foods">
+      <ul ref="foods">
+        <li v-for="(value,key) in goods" :key="key" class="hook">
           <h1 class="title" :ref="value.name">{{value.name}}</h1>
           <ul class="allFood">
-            <li v-for="(food,key) in value.foods" :key="key" class="foodItem food-list-hook" ref="foodItem">
+            <li v-for="(food,key) in value.foods" :key="key" class="foodItem">
               <div class="icon">
                 <img :src="food.icon" />
               </div>
@@ -50,19 +50,25 @@ import BScroll from "better-scroll";
         startY: 0,
         listHeight: [],
         scrollPosition: 0,
+        index1: 0
       }
     },
     computed: {
-      currentIndex() {
-        for(let i = 0; i<listHeight.length; i++){
-          let top = listHeight[i];
-          let bottom = listHeight[i+1];
-          if(!bottom || (this.scrollPosition > top && this.scrollPosition < bottom))
-          {
-            return i;
+      currentIndex: {
+        get: function() {
+          for(let i = 0; i<this.listHeight.length; i++){
+            let top = this.listHeight[i];
+            let bottom = this.listHeight[i+1];
+            if(!bottom || (this.scrollPosition >= top && this.scrollPosition < bottom))
+            {
+              return this.index = i;
+            }
           }
+          return 0;
+        },
+        set: function(value) {
+          this.index1 = value;
         }
-        return 0;
       }
     },
     methods: {
@@ -73,6 +79,10 @@ import BScroll from "better-scroll";
         res = res.data;
         if (res.ret && res.data) {
           this.goods = res.data.goods;
+          this.$nextTick(() => {
+            this.initScroll();
+            this.calculateHeight();   //要对原生DOM进行操作的时候应该将函数写在$nextTick回调函数中，直接写在mounted中也会可能获取不到
+          });
         }
       },
       initScroll() {
@@ -80,18 +90,21 @@ import BScroll from "better-scroll";
         this.foodScroll = new BScroll(".foods", {probeType: 3 ,click: true});
         this.foodScroll.on("scroll", (pos)=> {    //better-scroll区域滚动时获取滚动的高度
           this.scrollPosition = Math.abs(Math.round(pos.y));
-          
         })
       },
-      rightMach(e) {
+      rightMach(index,e) {    //函数调用时e的实参写成$event
         const itemText= e.target.innerText;
         const element = this.$refs[itemText][0];  //this.$refs是一个对象，因为ref绑定的是循环的数据，所以this.$refs对象里面有全部的数据
-                                            //热销榜:"[xxx]",单人精彩套餐:"[xxx]",冰爽饮品限时特惠:"[xxx]"...    this.$refs[item][0]获取的是数组里面的DOM元素
+                                            //热销榜:"[xxx]",单人精彩套餐:"[xxx]",冰爽饮品限时特惠:"[xxx]"...    this.$refs[itemText][0]获取的是数组里面的DOM元素
+                                            //因为itemText是变量，所以用[]
         this.foodScroll.scrollToElement(element);
+        
+        this.currentIndex = index;
+        
       },
       calculateHeight() {
-        let foodList = this.$refs.food.querySelectorAll("food-list-hook");
-        let height = 0;
+        var foodList = this.$refs.foods.getElementsByClassName("hook");
+        let height = 0; 
         this.listHeight.push(height);
         for(let i = 0; i<foodList.length; i++){
           let item = foodList[i];
@@ -106,8 +119,8 @@ import BScroll from "better-scroll";
     },
     mounted() {
       this.getGoodsInfo();
-      this.initScroll();
-      this.calculateHeight();   //使用ref的元素要在mounted中，所以calculateHeight函数写在此处
+      
+         //使用ref的元素要在mounted中，所以calculateHeight函数写在此处
     }
   }
 </script>
@@ -131,6 +144,12 @@ import BScroll from "better-scroll";
         height: 1.08rem
         padding: 0 .24rem
         line-height: .28rem
+        &.selected
+          margin-top: -.02rem
+          background-color: white
+          font-weight: 700
+          .text
+            border-bottom: none
         .icon
           display: inline-block
           vertical-align: top

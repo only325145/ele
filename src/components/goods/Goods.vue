@@ -2,7 +2,7 @@
   <div class="goods">
     <div class="menu">
       <ul>
-        <li class="menuItem" v-for="(value,key) in goods" :key="key" @click="rightMach(key,$event)" :class="{'selected': index1===key}">
+        <li class="menuItem" v-for="(value,key) in goods" :key="key" @click="rightMach(key,$event)" :class="{'selected': currentIndex===key}">
           <span class="text">
             <span v-show="value.type>-1" class="icon" :class="classMap[value.type]"></span>{{value.name}}
           </span>
@@ -50,32 +50,21 @@ export default {
       startY: 0,
       listHeight: [],
       scrollPosition: 0,
-      index1: 0
     };
   },
-  /* computed: {
-      currentIndex: {
-        get: function() {
-          if(this.scrollPosition){
-            for(let i = 0; i<this.listHeight.length; i++){
-              let top = this.listHeight[i];
-              let bottom = this.listHeight[i+1];
-              if(!bottom || (this.scrollPosition >= top && this.scrollPosition < bottom))
-              {
-                return i;
-              }
-            }
-            return 0;
-          }
-          else{
-            return this.index1;
-          }
-        },
-        set: function(value) {
-          this.index1 = value;
+  computed: {
+    currentIndex() {
+      for(let i = 0; i<this.listHeight.length; i++){
+        let top = this.listHeight[i];
+        let bottom = this.listHeight[i+1];
+        if(!bottom || (this.scrollPosition >= top && this.scrollPosition < bottom))
+        {
+          return i;
         }
       }
-    }, */
+      return 0;
+    }
+  },
   methods: {
     getGoodsInfo() {
       Axios.get("/data.json").then(this.getGoodsInfoSucc);
@@ -105,19 +94,10 @@ export default {
       //热销榜:"[xxx]",单人精彩套餐:"[xxx]",冰爽饮品限时特惠:"[xxx]"...    this.$refs[itemText][0]获取的是数组里面的DOM元素
       //因为itemText是变量，所以用[]
       this.foodScroll.scrollToElement(element);
-      this.index1 = index;
+      this.scrollPosition = this.listHeight[index]; //因为点击事件发生时获取的右侧scrollPosition为0
+                                                    //改变computed属性currentIndex依赖的数据scrollPosition,这样computed属性将重新计算，
+                                                    //所以currentIndex将会动态改变
     },
-    /* leftMath() {
-        for(let i = 0; i<this.listHeight.length; i++){
-          let top = this.listHeight[i];
-          let bottom = this.listHeight[i+1];
-          if(!bottom || (this.scrollPosition >= top && this.scrollPosition < bottom))
-          {
-            this.index1 = i;  console.log(i)
-          }
-        }
-        return 0;
-      }, */
     calculateHeight() {
       var foodList = this.$refs.foods.getElementsByClassName("hook");
       let height = 0;

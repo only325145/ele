@@ -35,12 +35,14 @@
         </li>
       </ul>
     </div>
+    <Shopcar></Shopcar>
   </div>
 </template>
 
 <script>
 import Axios from "axios";
 import BScroll from "better-scroll";
+import Shopcar from "../shopcar/Shopcar.vue"
 export default {
   name: "goods",
   data() {
@@ -64,6 +66,9 @@ export default {
       }
       return 0;
     }
+  },
+  components: {
+    Shopcar
   },
   methods: {
     getGoodsInfo() {

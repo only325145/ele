@@ -28,6 +28,9 @@
                     <span class="now">￥{{food.price}}</span>
                     <span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
                   </div>
+                  <div class="numwrapper">
+                    <Carcontrol :food="food"></Carcontrol>
+                  </div>
                 </div>     
               </div>
             </li>
@@ -35,7 +38,7 @@
         </li>
       </ul>
     </div>
-    <Shopcar></Shopcar>
+    <Shopcar :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></Shopcar>
   </div>
 </template>
 
@@ -43,11 +46,13 @@
 import Axios from "axios";
 import BScroll from "better-scroll";
 import Shopcar from "../shopcar/Shopcar.vue"
+import Carcontrol from "../carcontrol/Carcontrol.vue"
 export default {
   name: "goods",
   data() {
     return {
       goods: [],
+      seller: Object,
       touchStatus: false,
       startY: 0,
       listHeight: [],
@@ -65,10 +70,23 @@ export default {
         }
       }
       return 0;
+    },
+    selectFoods() {
+      let foods=[];
+      this.goods.forEach((good) => {
+        good.foods.forEach((food) => {
+          if(food.count){
+            foods.push(food);
+          }
+        })
+      })
+      return foods;
     }
   },
+  
   components: {
-    Shopcar
+    Shopcar,
+    Carcontrol
   },
   methods: {
     getGoodsInfo() {
@@ -78,6 +96,7 @@ export default {
       res = res.data;
       if (res.ret && res.data) {
         this.goods = res.data.goods;
+        this.seller = res.data.seller;
         this.$nextTick(() => {
           this.calculateHeight(); //要对原生DOM进行操作的时候应该将函数写在$nextTick回调函数中，直接写在mounted中也会可能获取不到
           this.initScroll();
@@ -215,6 +234,7 @@ export default {
             .description
               margin-bottom: .16rem
             .extra 
+              position: relative
               .count
                 margin-right: .24rem
               .price
@@ -227,4 +247,8 @@ export default {
                 .old
                   text-decoration: line-through
                   font-weight: 700
+              .numwrapper
+                position: absolute
+                right: 0
+                bottom: 0
 </style>

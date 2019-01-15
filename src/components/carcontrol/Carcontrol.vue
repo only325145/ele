@@ -1,6 +1,8 @@
 <template>
   <div class="carcontrol">
-    <div class="decrease iconfont" @click="decrease" v-show="food.count">&#xe68f;</div>
+    <transition name="fade">
+      <div class="decrease iconfont" @click="decrease" v-show="food.count">&#xe68f;</div>
+    </transition>
     <div class="count" v-show="food.count">{{food.count}}</div>
     <div class="add iconfont" @click="add">&#xe636;</div>
   </div>
@@ -39,7 +41,21 @@ export default {
 <style lang="stylus" scoped>
 .carcontrol
   font-size: 0
-  .decrease,.add
+  position: relative
+  .decrease
+    position: absolute
+    right: .7rem
+    display: inline-block
+    font-size: .36rem
+    line-height: .24rem
+    padding: .12rem
+    color: rgb(0,160,220)
+    &.fade-enter-active,&.fade-leave-active
+      transition: all 0.3s linear
+    &.fade-enter,&.fade-leave-to
+      opacity: 0
+      right: 0
+  .add
     display: inline-block
     font-size: .36rem
     line-height: .24rem

@@ -41,20 +41,18 @@ export default {
 <style lang="stylus" scoped>
 .carcontrol
   font-size: 0
-  position: relative
   .decrease
-    position: absolute
-    right: .7rem
     display: inline-block
     font-size: .36rem
     line-height: .24rem
     padding: .12rem
     color: rgb(0,160,220)
+    transition: all 0.3s linear
     &.fade-enter-active,&.fade-leave-active
-      transition: all 0.3s linear
+      transform: translate3d(0,0,0)
     &.fade-enter,&.fade-leave-to
       opacity: 0
-      right: 0
+      transform: translate3d(.48rem,0,0)
   .add
     display: inline-block
     font-size: .36rem

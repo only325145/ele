@@ -35,6 +35,14 @@ export default {
       }
     }
   },
+  /* watch: {
+     food:{
+        handler(val){
+          console.log("目前count：" + val.name)
+        },
+        deep: true,
+     }
+  }, */
 }
 </script>
 

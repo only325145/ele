@@ -14,18 +14,20 @@
       <div class="contentRight">
         <div class="pay" :class="pay">{{des}}</div>
       </div>
+      <div class="bg" v-show="listShow"></div>
       <div class="shopcarList" v-show="listShow">
         <div class="listHeader">
           <span class="title">购物车</span>
-          <span class="clear">清空</span>
+          <span class="clear" @click="empty">清空</span>
         </div>
         <div class="listContent">
           <ul class="listBox">
             <li class="listItem" v-for="(value,key) in selectFoods" :key="key">
               <span class="name">{{value.name}}</span>
               <div class="price">￥{{value.price*value.count}}</div>
-              <div class="carControl">
-                <Carcontrol></Carcontrol>
+              <div class="num">
+                <Carcontrol :food="value"></Carcontrol>
+                <!--将selectFoods中遍历出的数据传给Carcontrol组件,因为购物车详情页面Carcontrol只会出现在选中的商品栏里-->
               </div>
             </li>
           </ul>
@@ -62,7 +64,10 @@ export default {
       else{
         return;   //没有商品被选择的话，购物车详情页的控制显示属性将保持初始值false
       } 
-    }
+    },
+    empty() {
+      this.$emit("clear");
+    },
   },
   computed: {
     totalPrice() {
@@ -97,8 +102,10 @@ export default {
     listShow() {
       if(this.totalCount) {
         return this.display;   //有商品被选择的情况下购物车才会有展示的可能
+        
       }
       else{
+        this.display = false;   //如果在购物车详情列表里将商品都删除的时候(count=0),将显示属性设为false,不然再次选择商品后购物车详情页面将直接显示出来
         return false;
       }
     }
@@ -202,6 +209,15 @@ export default {
         &.enough
           background-color: rgb(0,160,220)
           color: rgb(255,255,255)
+    .bg
+      position: absolute
+      z-index: -2
+      bottom: 1.04rem
+      left: 0
+      right: 0
+      height: 13rem
+      background-color: rgb(7,17,27)
+      opacity: 0.8
     .shopcarList
       position: absolute
       z-index: -1
@@ -247,10 +263,9 @@ export default {
               color: rgb(240,20,20)
               font-weight: 700
               font-size: .28rem
-            .carControl
+            .num
               position: absolute
               right: 0
               bottom: .24rem
-              font-size: .24rem
-              width: 1rem
+              font-size: .36rem
 </style>

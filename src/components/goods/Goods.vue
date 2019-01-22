@@ -29,7 +29,8 @@
                     <span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="numwrapper">
-                    <Carcontrol :food="food"></Carcontrol>
+                    <Carcontrol :food="food"></Carcontrol>  
+                    <!-- 此处赋值的food是li循环里面的food，即遍历出的所有food -->
                   </div>
                 </div>     
               </div>
@@ -38,7 +39,7 @@
         </li>
       </ul>
     </div>
-    <Shopcar :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></Shopcar>
+    <Shopcar :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" @clear="emptycar"></Shopcar>
   </div>
 </template>
 
@@ -89,6 +90,9 @@ export default {
     Carcontrol
   },
   methods: {
+    emptycar() {
+      console.log(111)
+    },
     getGoodsInfo() {
       Axios.get("/data.json").then(this.getGoodsInfoSucc);
     },

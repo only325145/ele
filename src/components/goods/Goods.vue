@@ -82,7 +82,7 @@ export default {
         })
       })
       return foods;
-    }
+    },
   },
   
   components: {
@@ -90,8 +90,14 @@ export default {
     Carcontrol
   },
   methods: {
-    emptycar() {
-      console.log(111)
+    emptycar() {   //子集Shopcar点击事件事件传递上来的自定义事件，对selectFoods数据进行操作。购物车详细列表的存在依赖于count，所以将count全部设置为0。
+      this.goods.forEach((good) => {
+        good.foods.forEach((food) => {
+          if(food.count){
+            food.count = 0;
+          }
+        })
+      })
     },
     getGoodsInfo() {
       Axios.get("/data.json").then(this.getGoodsInfoSucc);

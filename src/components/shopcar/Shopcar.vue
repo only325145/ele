@@ -66,7 +66,7 @@ export default {
       } 
     },
     empty() {
-      this.$emit("clear");
+      this.$emit("clear");  //点击清空的时候要把shopcarList里的内容清掉，shopcarList的内容存在依赖于selectFoods，对selectFoods数据的操作要在Goods里进行，所以给父级Goods传递一个自定义事件。
     },
   },
   computed: {

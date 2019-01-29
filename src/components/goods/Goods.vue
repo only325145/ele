@@ -39,7 +39,8 @@
         </li>
       </ul>
     </div>
-    <Shopcar :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" @clear="emptycar"></Shopcar>
+    <Shopcar :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" @clear="emptycar" @back="showBack"></Shopcar>
+    <div class="bg" v-show="showBg"></div>
   </div>
 </template>
 
@@ -58,6 +59,7 @@ export default {
       startY: 0,
       listHeight: [],
       scrollPosition: 0,
+      showBg: "",
     };
   },
   computed: {
@@ -91,13 +93,12 @@ export default {
   },
   methods: {
     emptycar() {   //子集Shopcar点击事件事件传递上来的自定义事件，对selectFoods数据进行操作。购物车详细列表的存在依赖于count，所以将count全部设置为0。
-      this.goods.forEach((good) => {
-        good.foods.forEach((food) => {
-          if(food.count){
-            food.count = 0;
-          }
-        })
+      this.selectFoods.forEach((food) => {
+        food.count = 0;
       })
+    },
+    showBack(value) {
+      this.showBg = value;
     },
     getGoodsInfo() {
       Axios.get("/data.json").then(this.getGoodsInfoSucc);
@@ -261,4 +262,13 @@ export default {
                 position: absolute
                 right: 0
                 bottom: 0
+    .bg
+      position: fixed
+      z-index: 30
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      background-color: rgba(7,17,27,.8)
+      filter: blur(.1rem)
 </style>

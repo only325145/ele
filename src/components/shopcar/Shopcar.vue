@@ -12,9 +12,8 @@
         <div class="des">另需配送费￥{{deliveryPrice}}元</div>
       </div>
       <div class="contentRight">
-        <div class="pay" :class="pay">{{des}}</div>
+        <div class="pay" :class="pay" @click="toPay">{{des}}</div>
       </div>
-      <div class="bg" v-show="listShow"></div>
       <div class="shopcarList" v-show="listShow">
         <div class="listHeader">
           <span class="title">购物车</span>
@@ -63,10 +62,20 @@ export default {
       }
       else{
         return;   //没有商品被选择的话，购物车详情页的控制显示属性将保持初始值false
-      } 
+      }
+      this.$emit("back",this.listShow);  //购物车详情页被点击不显示的时候背景也要跟着消失
     },
     empty() {
       this.$emit("clear");  //点击清空的时候要把shopcarList里的内容清掉，shopcarList的内容存在依赖于selectFoods，对selectFoods数据的操作要在Goods里进行，所以给父级Goods传递一个自定义事件。
+      this.$emit("back",this.listShow);   //购物车详情列表因点击了清空而消失的时候背景也要跟着不显示
+    },
+    toPay() {
+      if(this.totalPrice < this.minPrice){
+        return;
+      }
+      else{
+        alert("一共需要结算:" + this.totalPrice + "元");
+      }
     },
   },
   computed: {
@@ -101,11 +110,11 @@ export default {
     },
     listShow() {
       if(this.totalCount) {
-        return this.display;   //有商品被选择的情况下购物车才会有展示的可能
-        
+        return this.display;   //有商品被选择的情况下购物车才会有展示的可能       
       }
       else{
         this.display = false;   //如果在购物车详情列表里将商品都删除的时候(count=0),将显示属性设为false,不然再次选择商品后购物车详情页面将直接显示出来
+        this.$emit("back",false);  //从购物车里删除完商品时背景应该不显示，即将false传递给父组件控制背景不显示
         return false;
       }
     }
@@ -209,15 +218,6 @@ export default {
         &.enough
           background-color: rgb(0,160,220)
           color: rgb(255,255,255)
-    .bg
-      position: absolute
-      z-index: -2
-      bottom: 1.04rem
-      left: 0
-      right: 0
-      height: 13rem
-      background-color: rgb(7,17,27)
-      opacity: 0.8
     .shopcarList
       position: absolute
       z-index: -1

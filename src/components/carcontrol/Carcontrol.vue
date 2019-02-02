@@ -1,10 +1,10 @@
 <template>
   <div class="carcontrol">
     <transition name="fade">
-      <div class="decrease iconfont" @click="decrease" v-show="food.count">&#xe68f;</div>
+      <div class="decrease iconfont" @click.stop="decrease" v-show="food.count">&#xe68f;</div>
     </transition>
     <div class="count" v-show="food.count">{{food.count}}</div>
-    <div class="add iconfont" @click="add">&#xe636;</div>
+    <div class="add iconfont" @click.stop="add">&#xe636;</div>
   </div>
 </template>
 
@@ -19,22 +19,20 @@ export default {
   },
   methods: {
     add() {
-      if(!this.food.count){
-        Vue.set(this.food,'count',1);
-      }
-      else{
-        this.food.count ++;
+      if (!this.food.count) {
+        Vue.set(this.food, "count", 1);
+      } else {
+        this.food.count++;
       }
     },
     decrease() {
-      if(this.food.count > 0){
-        this.food.count --;
-      }
-      else{
-        Vue.set(this.food,"count",0);
+      if (this.food.count > 0) {
+        this.food.count--;
+      } else {
+        Vue.set(this.food, "count", 0);
       }
     }
-  },
+  }
   /* watch: {
      food:{
         handler(val){
@@ -43,7 +41,7 @@ export default {
         deep: true,
      }
   }, */
-}
+};
 </script>
 
 <style lang="stylus" scoped>

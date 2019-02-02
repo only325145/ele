@@ -14,7 +14,7 @@
         <li v-for="(value,key) in goods" :key="key" class="hook">
           <h1 class="title" :ref="value.name">{{value.name}}</h1>
           <ul class="allFood">
-            <li v-for="(food,key) in value.foods" :key="key" class="foodItem">
+            <li v-for="(food,key) in value.foods" :key="key" class="foodItem" @click="detail(food)">
               <div class="icon">
                 <img :src="food.icon" />
               </div>
@@ -41,14 +41,16 @@
     </div>
     <Shopcar :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" @clear="emptycar" @back="showBack"></Shopcar>
     <div class="bg" v-show="showBg"></div>
+    <Detail :food="selectedFood" ref="detail"></Detail>
   </div>
 </template>
 
 <script>
 import Axios from "axios";
 import BScroll from "better-scroll";
-import Shopcar from "../shopcar/Shopcar.vue"
-import Carcontrol from "../carcontrol/Carcontrol.vue"
+import Shopcar from "../shopcar/Shopcar.vue";
+import Carcontrol from "../carcontrol/Carcontrol.vue";
+import Detail from "../detail/Detail.vue";
 export default {
   name: "goods",
   data() {
@@ -60,45 +62,54 @@ export default {
       listHeight: [],
       scrollPosition: 0,
       showBg: "",
+      selectedFood: {}
     };
   },
   computed: {
     currentIndex() {
-      for(let i = 0; i<this.listHeight.length; i++){
+      for (let i = 0; i < this.listHeight.length; i++) {
         let top = this.listHeight[i];
-        let bottom = this.listHeight[i+1];
-        if(!bottom || (this.scrollPosition >= top && this.scrollPosition < bottom))
-        {
+        let bottom = this.listHeight[i + 1];
+        if (
+          !bottom ||
+          (this.scrollPosition >= top && this.scrollPosition < bottom)
+        ) {
           return i;
         }
       }
       return 0;
     },
     selectFoods() {
-      let foods=[];
-      this.goods.forEach((good) => {
-        good.foods.forEach((food) => {
-          if(food.count){
+      let foods = [];
+      this.goods.forEach(good => {
+        good.foods.forEach(food => {
+          if (food.count) {
             foods.push(food);
           }
-        })
-      })
+        });
+      });
       return foods;
-    },
+    }
   },
-  
+
   components: {
     Shopcar,
-    Carcontrol
+    Carcontrol,
+    Detail
   },
   methods: {
-    emptycar() {   //子集Shopcar点击事件事件传递上来的自定义事件，对selectFoods数据进行操作。购物车详细列表的存在依赖于count，所以将count全部设置为0。
-      this.selectFoods.forEach((food) => {
+    emptycar() {
+      //子集Shopcar点击事件事件传递上来的自定义事件，对selectFoods数据进行操作。购物车详细列表的存在依赖于count，所以将count全部设置为0。
+      this.selectFoods.forEach(food => {
         food.count = 0;
-      })
+      });
     },
     showBack(value) {
       this.showBg = value;
+    },
+    detail(food) {
+      this.selectedFood = food;
+      this.$refs.detail.show(); //父组件调用子组件的方法
     },
     getGoodsInfo() {
       Axios.get("/data.json").then(this.getGoodsInfoSucc);
@@ -130,8 +141,8 @@ export default {
       //因为itemText是变量，所以用[]
       this.foodScroll.scrollToElement(element);
       this.scrollPosition = this.listHeight[index]; //因为点击事件发生时获取的右侧scrollPosition为0
-                                                    //改变computed属性currentIndex依赖的数据scrollPosition,这样computed属性将重新计算，
-                                                    //所以currentIndex将会动态改变
+      //改变computed属性currentIndex依赖的数据scrollPosition,这样computed属性将重新计算，
+      //所以currentIndex将会动态改变
     },
     calculateHeight() {
       var foodList = this.$refs.foods.getElementsByClassName("hook");
@@ -262,9 +273,10 @@ export default {
                 position: absolute
                 right: 0
                 bottom: 0
+                z-index: 20
     .bg
       position: fixed
-      z-index: 30
+      z-index: 40
       top: 0
       bottom: 0
       left: 0

@@ -39,8 +39,8 @@
         </li>
       </ul>
     </div>
-    <Shopcar :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" @clear="emptycar" @back="showBack"></Shopcar>
-    <div class="bg" v-show="showBg"></div>
+    <Shopcar :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" @clear="emptycar" @back="showBack"  ref="change"></Shopcar>
+    <div class="bg" v-show="showBg" @click="cgShowState"></div>
     <Detail :food="selectedFood" ref="detail"></Detail>
   </div>
 </template>
@@ -110,6 +110,9 @@ export default {
     detail(food) {
       this.selectedFood = food;
       this.$refs.detail.show(); //父组件调用子组件的方法
+    },
+    cgShowState() {
+      this.$refs.change.toggleList();  //在点击灰色背景时调用子组件shopcar的方法改变现实状态，使得详情页面消失
     },
     getGoodsInfo() {
       Axios.get("/data.json").then(this.getGoodsInfoSucc);

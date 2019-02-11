@@ -17,12 +17,23 @@
             <span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
           </div>
         </div>
+        <div class="button" v-show="!food.count" @click="add">加入购物车</div>
+        <carcontrol class="select" v-show="food.count" :food="food"></carcontrol><!--将选中商品信息传给carcontrol组件-->
       </div>
+      <div class="divide"></div>
+      <div class="infor">
+        <h1>商品介绍</h1>
+        <div class="information">{{info}}</div>
+      </div>
+      <div class="divide"></div>      
     </div>  
   </div>
 </template>
 
 <script>
+import Carcontrol from "../carcontrol/Carcontrol.vue";
+import Vue from "vue";
+import BScroll from "better-scroll";
 export default {
   name: "Detail",
   props: {
@@ -30,7 +41,7 @@ export default {
   },
   data() {
     return {
-      showFlag: false
+      showFlag: false,
     };
   },
   methods: {
@@ -39,7 +50,28 @@ export default {
     },
     goback() {
       this.showFlag = false;
+    },
+    add() {
+      if (!this.food.count) {
+        Vue.set(this.food, "count", 1);
+      }
+    },
+  },
+  computed: {
+    info() {
+      if(this.food.info){
+        return this.food.info;
+      }
+      else{
+        return "无";
+      }
     }
+  },
+  components: {
+    Carcontrol
+  },
+  mounted() {
+    this.detailScroll = new BScroll(".detail", { click: true });
   }
 };
 </script>
@@ -78,6 +110,7 @@ export default {
         color: #fff
         line-height: .7rem
     .content
+      position: relative
       padding: .36rem
       .foodName
         font-size: .28rem
@@ -103,4 +136,34 @@ export default {
           .old
             text-decoration: line-through
             font-weight: 700
+      .button
+        position: absolute
+        right: .36rem
+        bottom: .36rem
+        width: 1.24rem
+        height: .36rem
+        padding: .12rem .24rem
+        border-radius: .3rem
+        text-align: center
+        line-height: .36rem
+        font-size: .12rem
+        color: rgb(255,255,255)
+        background-color: rgb(0,160,220)
+      .select
+        position: absolute
+        right: .36rem
+        bottom: .36rem
+    .divide
+      width: 100%
+      height: .32rem
+      background-color: #f3f5f7
+      border-top: 1px solid rgba(7,17,27,0.1)
+      border-bottom: 1px solid rgba(7,17,27,0.1)
+    .infor
+      padding: .36rem
+      .information
+        padding: .12rem .16rem 0 .16rem
+        color: rgb(77,85,93)
+        font-weight: 200
+        line-height: .48rem
 </style>

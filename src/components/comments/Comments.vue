@@ -19,18 +19,24 @@
             <Star :size="36" :score="4"></Star>
           </div> 
         </div>
-        <div>送达时间</div>
+        <div class="time">
+          <span>送达时间</span>
+          <span class="timer">44分钟</span>
+        </div>
       </div>
     </div>
+    <Shopcar></Shopcar>
   </div>
 </template>
 
 <script>
 import Star from "../star/Star.vue"
+import Shopcar from "../shopcar/Shopcar.vue"
   export default {
     name: "comments",
     components: {
-      Star
+      Star,
+      Shopcar
     }
   }
 </script>
@@ -41,13 +47,15 @@ import Star from "../star/Star.vue"
   position: absolute
   top: 3.54rem
   bottom: 1.16rem
-  width: 100%
+  left: 0
+  right: 0
   overflow: hidden
   .grade
-    width: 100%
     padding: .36rem 0
+    height: 3rem
+    width: 100%
     .left
-      float: left
+      display: inline-block
       box-sizing: border-box
       width: 40%
       text-align: center
@@ -63,7 +71,7 @@ import Star from "../star/Star.vue"
         line-height: .24rem
         margin-top: .16rem
     .right
-      float: left
+      display: inline-block
       box-sizing: border-box
       width: 60%
       padding: 0 .48rem
@@ -76,4 +84,16 @@ import Star from "../star/Star.vue"
           display: inline-block
           margin-left: .24rem
           width: 2rem
+      .time
+        font-size: .24rem
+        .timer
+          margin-left: .24rem
+          color: rgb(147,153,159)
+          line-height: .36rem
+  .test
+    width: 100%
+    height: .32rem
+    background-color: #f3f5f7
+    border-top: 1px solid rgba(7,17,27,0.1)
+    border-bottom: 1px solid rgba(7,17,27,0.1) 
 </style>

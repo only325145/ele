@@ -12,10 +12,10 @@
   const CLS_OFF = "off";
 export default {
     props: {
-      size: {
-        type: Number
+      size: {   //星星的大小
+        type: Number   
       },
-      score: {
+      score: {   //分数
         type: Number
       }
     },

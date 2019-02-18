@@ -18,12 +18,12 @@
           <div class="button" v-show="!food.count" @click="add">加入购物车</div>
           <carcontrol class="select" v-show="food.count" :food="food"></carcontrol><!--将选中商品信息传给carcontrol组件-->
         </div>
-        <div class="divide"></div>
+        <Split></Split>
         <div class="infor">
           <h1>商品介绍</h1>
           <div class="information">{{info}}</div>
         </div>
-        <div class="divide"></div>      
+        <Split></Split>   
       </div>  
     </div>
     <div class="back" @click="goback">
@@ -34,6 +34,7 @@
 
 <script>
 import Carcontrol from "../carcontrol/Carcontrol.vue";
+import Split from "../split/Split.vue";
 import Vue from "vue";
 import BScroll from "better-scroll";
 export default {
@@ -69,11 +70,12 @@ export default {
     }
   },
   components: {
-    Carcontrol
+    Carcontrol,
+    Split
   },
   mounted() {
-    let wrapper = document.querySelector('.detailPart');   
-    this.detailScroll = new BScroll(wrapper, { click: true });  //此处将wrapper直接写成".detailPart"不能实现滚动，为什么？必须写成这种两行的格式
+    let wrapper = document.querySelector(".detailPart");
+    this.detailScroll = new BScroll(wrapper, { click: true }); //此处将wrapper直接写成".detailPart"不能实现滚动，为什么？必须写成这种两行的格式
   }
 };
 </script>

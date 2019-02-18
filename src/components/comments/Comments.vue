@@ -25,20 +25,23 @@
         </div>
       </div>
     </div>
+    <Split></Split>
     <Shopcar></Shopcar>
   </div>
 </template>
 
 <script>
-import Star from "../star/Star.vue"
-import Shopcar from "../shopcar/Shopcar.vue"
-  export default {
-    name: "comments",
-    components: {
-      Star,
-      Shopcar
-    }
+import Star from "../star/Star.vue";
+import Split from "../split/Split.vue";
+import Shopcar from "../shopcar/Shopcar.vue";
+export default {
+  name: "comments",
+  components: {
+    Star,
+    Shopcar,
+    Split
   }
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -90,10 +93,4 @@ import Shopcar from "../shopcar/Shopcar.vue"
           margin-left: .24rem
           color: rgb(147,153,159)
           line-height: .36rem
-  .test
-    width: 100%
-    height: .32rem
-    background-color: #f3f5f7
-    border-top: 1px solid rgba(7,17,27,0.1)
-    border-bottom: 1px solid rgba(7,17,27,0.1) 
 </style>

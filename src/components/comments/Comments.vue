@@ -46,7 +46,6 @@ export default {
 
 <style lang="stylus" scoped>
 .comment
-  display: flex
   position: absolute
   top: 3.54rem
   bottom: 1.16rem
@@ -55,7 +54,6 @@ export default {
   overflow: hidden
   .grade
     padding: .36rem 0
-    height: 3rem
     width: 100%
     .left
       display: inline-block

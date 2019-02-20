@@ -26,20 +26,55 @@
       </div>
     </div>
     <Split></Split>
-    <Shopcar></Shopcar>
+    <Shopcar :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></Shopcar>
   </div>
 </template>
 
 <script>
+import Axios from "axios";
 import Star from "../star/Star.vue";
 import Split from "../split/Split.vue";
 import Shopcar from "../shopcar/Shopcar.vue";
 export default {
   name: "comments",
+  data() {
+    return {
+      goods: [],
+      seller: Object
+    };
+  },
+  computed: {
+    selectFoods() {
+      let foods = [];
+      this.goods.forEach(good => {
+        good.foods.forEach(food => {
+          if (food.count) {
+            foods.push(food);
+          }
+        });
+      });
+      return foods;
+    }
+  },
   components: {
     Star,
     Shopcar,
     Split
+  },
+  metods: {
+    getGoodsInfo() {
+      Axios.get("/data.json").then(this.getGoodsInfoSucc);
+    },
+    getGoodsInfoSucc(res) {
+      res = res.data;
+      if (res.ret && res.data) {
+        this.goods = res.data.goods;
+        this.seller = res.data.seller;
+      }
+    }
+  },
+  mounted() {
+    this.getGoodsInfo();
   }
 };
 </script>

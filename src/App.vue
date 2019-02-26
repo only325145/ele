@@ -4,7 +4,7 @@
     <div class="tab">
       <router-link to="/goods" tag="div" class="tab-item">商品</router-link>
       <router-link to="/comments" tag="div" class="tab-item">评价</router-link>
-      <router-link to="/detail" tag="div" class="tab-item">商家</router-link>
+      <router-link to="/seller" tag="div" class="tab-item">商家</router-link>
     </div>
     <div class="content">
       <router-view></router-view>

@@ -23,7 +23,11 @@
           <h1>商品介绍</h1>
           <div class="information">{{info}}</div>
         </div>
-        <Split></Split>   
+        <Split></Split>
+        <div class="rating">
+          <h1>商品评价</h1>
+          <Ratingselect></Ratingselect>
+        </div>   
       </div>  
     </div>
     <div class="back" @click="goback">
@@ -35,6 +39,7 @@
 <script>
 import Carcontrol from "../carcontrol/Carcontrol.vue";
 import Split from "../split/Split.vue";
+import Ratingselect from "../ratingselect/Ratingselect.vue";
 import Vue from "vue";
 import BScroll from "better-scroll";
 export default {
@@ -71,7 +76,8 @@ export default {
   },
   components: {
     Carcontrol,
-    Split
+    Split,
+    Ratingselect
   },
   mounted() {
     let wrapper = document.querySelector(".detailPart");
@@ -160,6 +166,9 @@ export default {
           color: rgb(77,85,93)
           font-weight: 200
           line-height: .48rem
+      .rating 
+        padding: .36rem .36rem 0 .36rem
+        border-bottom: 2px solid rgba(7,17,27,0.1) 
   .back
     position: fixed 
     top: .2rem

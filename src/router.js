@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Goods from "./components/goods/Goods.vue"
 import Comments from "./components/comments/Comments.vue"
 import Detail from "./components/detail/Detail.vue"
+import Seller from "./components/seller/Seller.vue"
 
 Vue.use(Router);
 
@@ -25,6 +26,10 @@ export default new Router({
     {
       path: "/detail",
       component: Detail
+    },
+    {
+      path: "/seller",
+      component: Seller
     }
   ]
 });

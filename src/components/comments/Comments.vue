@@ -26,7 +26,7 @@
       </div>
     </div>
     <Split></Split>
-    <Shopcar :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></Shopcar>
+    
   </div>
 </template>
 
@@ -61,21 +61,7 @@ export default {
     Shopcar,
     Split
   },
-  metods: {
-    getGoodsInfo() {
-      Axios.get("/data.json").then(this.getGoodsInfoSucc);
-    },
-    getGoodsInfoSucc(res) {
-      res = res.data;
-      if (res.ret && res.data) {
-        this.goods = res.data.goods;
-        this.seller = res.data.seller;
-      }
-    }
-  },
-  mounted() {
-    this.getGoodsInfo();
-  }
+  
 };
 </script>
 

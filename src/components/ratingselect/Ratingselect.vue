@@ -1,9 +1,9 @@
 <template>
   <div class="ratingselect">
     <div class="type">
-        <span class="block positive">全部<span class="count">57</span></span>
-        <span class="block positive">推荐<span class="count">47</span></span>
-        <span class="block negative">吐槽<span class="count">10</span></span>
+        <span class="block positive" @click="select(2)" :class="{'active':type===2}">{{desc.all}}<span class="count">{{rating.length}}</span></span>
+        <span class="block positive" @click="select(0)" :class="{'active':type===0}">{{desc.positive}}<span class="count">47</span></span>
+        <span class="block negative" @click="select(1)" :class="{'active':type===1}">{{desc.negative}}<span class="count">10</span></span>
     </div>
     <div class="content">
         <span class="iconfont"></span>
@@ -14,7 +14,40 @@
 
 <script>
 export default {
-    name: "ratingselect"
+    name: "ratingselect",
+    props: {
+      desc: {
+        type: Object,
+        default() {    //props传递数据设置默认值的格式
+          return {
+            all: "全部",
+            positive: "满意",  
+            negative: "不满意"   //设置default值，如果父组件没有传递相关数据将显示default值
+          }
+        }
+      },
+      rating: {
+        type: Array,
+        default() {
+          return []
+        }
+      }
+    },
+    data() {
+      return{
+        type: 2
+      }
+    },
+    computed: {
+      positives() {
+        
+      },
+    },
+    methods: {
+      select(typeN) {
+        this.type = typeN
+      }
+    }
 }
 </script>
 
@@ -31,9 +64,15 @@ export default {
         margin-right: .16rem
         color: rgb(77, 85, 93)
         &.positive
-          background: rgb(0, 160, 220)
+          background-color: rgba(0, 160, 220, 0.2)
+          &.active
+            color: rgb(255,255,255)
+            background-color: rgb(0, 160, 220)
         &.negative
-          background: rgba(77, 85, 93, 0.2)
+          background-color: rgba(77, 85, 93, 0.2)
+          &.active
+            color: rgb(255,255,255)
+            background-color: rgb(77, 85, 93)
         .count
           margin-left: .04rem
           font-size: .24rem

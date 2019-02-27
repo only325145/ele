@@ -26,7 +26,7 @@
         <Split></Split>
         <div class="rating">
           <h1>商品评价</h1>
-          <Ratingselect></Ratingselect>
+          <Ratingselect :desc="desc" :rating="food.ratings"></Ratingselect>
         </div>   
       </div>  
     </div>
@@ -49,7 +49,12 @@ export default {
   },
   data() {
     return {
-      showFlag: false
+      showFlag: false,
+      desc: {
+        all: '全部',
+        positive: '推荐',
+        negative: '吐槽'
+      }
     };
   },
   methods: {

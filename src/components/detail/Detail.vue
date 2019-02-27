@@ -26,8 +26,14 @@
         <Split></Split>
         <div class="rating">
           <h1>商品评价</h1>
-          <Ratingselect :desc="desc" :rating="food.ratings"></Ratingselect>
-        </div>   
+          <Ratingselect :desc="desc" :ratings="food.ratings"></Ratingselect>
+        </div> 
+        <div class="ratingList">
+          <ul v-show="food.ratings && food.ratings.length">
+            <li v-for="(rating,key) in food.ratings" :key="key" class="list">{{rating.text}}</li>
+          </ul>
+          <div v-show="!food.rating || !food.ratings.length"></div>  <!-- 如果没有评价就显示该区域 -->
+        </div>  
       </div>  
     </div>
     <div class="back" @click="goback">
@@ -51,9 +57,9 @@ export default {
     return {
       showFlag: false,
       desc: {
-        all: '全部',
-        positive: '推荐',
-        negative: '吐槽'
+        all: "全部",
+        positive: "推荐",
+        negative: "吐槽"
       }
     };
   },

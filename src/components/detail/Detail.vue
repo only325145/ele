@@ -26,13 +26,22 @@
         <Split></Split>
         <div class="rating">
           <h1>商品评价</h1>
-          <Ratingselect :desc="desc" :ratings="food.ratings"></Ratingselect>
+          <Ratingselect :desc="desc" :ratings="food.ratings" @selectType="typeChange"></Ratingselect>
         </div> 
         <div class="ratingList">
           <ul v-show="food.ratings && food.ratings.length">
-            <li v-for="(rating,key) in food.ratings" :key="key" class="list">{{rating.text}}</li>
+            <li v-for="(rating,key) in ratings" :key="key" v-show="rating.text" class="list">
+              <div class="time">20190228</div>
+              <div class="user">
+                <span>{{rating.username}}</span>
+                <img class="avatar" :src="rating.avatar"/>
+              </div>
+              <div class="rateContent">
+                <span class="iconfont" :class="{'icon-dianzan':rating.rateType===0,'icon-ai46':rating.rateType===1}"></span>{{rating.text}}
+              </div>
+            </li>
           </ul>
-          <div v-show="!food.rating || !food.ratings.length"></div>  <!-- 如果没有评价就显示该区域 -->
+          <div v-show="!food.rating || !food.ratings.length">暂无评论</div>  <!-- 如果没有评价就显示该区域 -->
         </div>  
       </div>  
     </div>
@@ -60,7 +69,8 @@ export default {
         all: "全部",
         positive: "推荐",
         negative: "吐槽"
-      }
+      },
+      ratings: this.getRatings
     };
   },
   methods: {
@@ -74,6 +84,20 @@ export default {
       if (!this.food.count) {
         Vue.set(this.food, "count", 1);
       }
+    },
+    typeChange(type) {
+      if(type === 2){
+        this.ratings = this.food.ratings;console.log(this.ratings);
+      }
+      else{
+        this.ratings = [];
+        console.log(this.ratings);
+        this.food.ratings.forEach(rate => {
+          if(rate.rateType === type){
+            this.ratings.push(rate);
+          }
+        });
+      }     
     }
   },
   computed: {
@@ -83,6 +107,9 @@ export default {
       } else {
         return "无";
       }
+    },
+    getRatings() {
+      return this.food.ratings;
     }
   },
   components: {
@@ -180,6 +207,38 @@ export default {
       .rating 
         padding: .36rem .36rem 0 .36rem
         border-bottom: 2px solid rgba(7,17,27,0.1) 
+      .ratingList
+        margin: 0 .36rem
+        .list
+          position: relative
+          margin-top: .32rem     //因为定位会以padding为起点，为了后面的user部分和time一样高，list上面的距离用margin
+          padding-bottom: .32rem
+          border-bottom: 1px solid rgba(7,17,27,0.1) 
+          .time 
+            font-size: .24rem
+            color: rgb(147,153,159)
+            line-height: .28rem
+          .user
+            position: absolute
+            right: 0
+            top: 0
+            .avatar
+              width: .24rem
+              height: .24rem
+              margin-left: .12rem
+          .rateContent
+            margin-top: .12rem
+            font-size: .24rem
+            color: rgb(7,17,27)
+            line-height: .32rem
+            .iconfont
+              font-size: .24rem
+              margin-right: .08rem
+              line-height: .48rem
+              &.icon-dianzan    //iconfont 通过class名进行使用 
+                color: rgb(0,160,220)
+              &.icon-ai46
+                color: rgb(147,153,159)
   .back
     position: fixed 
     top: .2rem

@@ -30,7 +30,7 @@
         </div> 
         <div class="ratingList">
           <ul v-show="food.ratings && food.ratings.length">
-            <li v-for="(rating,key) in ratings" :key="key" v-show="rating.text" class="list">
+            <li v-for="(rating,key) in getrate" :key="key" v-show="rating.text" class="list">
               <div class="time">20190228</div>
               <div class="user">
                 <span>{{rating.username}}</span>
@@ -70,7 +70,7 @@ export default {
         positive: "推荐",
         negative: "吐槽"
       },
-      ratings: this.getRatings
+      type: 2,
     };
   },
   methods: {
@@ -86,18 +86,7 @@ export default {
       }
     },
     typeChange(type) {
-      if(type === 2){
-        this.ratings = this.food.ratings;console.log(this.ratings);
-      }
-      else{
-        this.ratings = [];
-        console.log(this.ratings);
-        this.food.ratings.forEach(rate => {
-          if(rate.rateType === type){
-            this.ratings.push(rate);
-          }
-        });
-      }     
+      this.type = type;
     }
   },
   computed: {
@@ -108,8 +97,19 @@ export default {
         return "无";
       }
     },
-    getRatings() {
-      return this.food.ratings;
+    getrate() { //采用计算属性实现list显示内容的改变，因为只需要type属性进行改变就可以动态改变getrate内容。可以实现在一开始只获取props数据中一部分内容的情况。
+      if(this.type === 2){    
+        return this.food.ratings;
+      }
+      else{
+        let ratings = [];
+        this.food.ratings.forEach(rate => {
+          if(rate.rateType === this.type){
+            ratings.push(rate);
+          }
+        });
+        return ratings;
+      }
     }
   },
   components: {
@@ -120,7 +120,7 @@ export default {
   mounted() {
     let wrapper = document.querySelector(".detailPart");
     this.detailScroll = new BScroll(wrapper, { click: true }); //此处将wrapper直接写成".detailPart"不能实现滚动，为什么？必须写成这种两行的格式
-  }
+  },
 };
 </script>
 

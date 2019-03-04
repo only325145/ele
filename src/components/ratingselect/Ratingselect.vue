@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       type: 2,
-      onlyContent: true
+      onlyContent: false
     };
   },
   computed: {

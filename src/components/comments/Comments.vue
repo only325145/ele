@@ -26,7 +26,7 @@
       </div>
     </div>
     <Split></Split>
-    
+    <Ratingselect></Ratingselect>
   </div>
 </template>
 
@@ -35,6 +35,7 @@ import Axios from "axios";
 import Star from "../star/Star.vue";
 import Split from "../split/Split.vue";
 import Shopcar from "../shopcar/Shopcar.vue";
+import Ratingselect from "../ratingselect/Ratingselect.vue";
 export default {
   name: "comments",
   data() {

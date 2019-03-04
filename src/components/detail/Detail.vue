@@ -26,11 +26,11 @@
         <Split></Split>
         <div class="rating">
           <h1>商品评价</h1>
-          <Ratingselect :desc="desc" :ratings="food.ratings" @selectType="typeChange"></Ratingselect>
+          <Ratingselect :desc="desc" :ratings="food.ratings" @selectType="typeChange" @content="ifContent"></Ratingselect>
         </div> 
         <div class="ratingList">
           <ul v-show="food.ratings && food.ratings.length">
-            <li v-for="(rating,key) in getrate" :key="key" v-show="rating.text" class="list">
+            <li v-for="(rating,key) in getrate" :key="key" v-show="ifShow(rating.text)" class="list">
               <div class="time">20190228</div>
               <div class="user">
                 <span>{{rating.username}}</span>
@@ -71,6 +71,7 @@ export default {
         negative: "吐槽"
       },
       type: 2,
+      showContent: false,
     };
   },
   methods: {
@@ -87,6 +88,17 @@ export default {
     },
     typeChange(type) {
       this.type = type;
+    },
+    ifContent(value) {
+      this.showContent = value;
+    },
+    ifShow(text) {
+      if(this.showContent && !text){
+        return false;
+      }
+      else{
+        return true;  //没有选择“只看有内容的评价” ，全部评论都显示
+      }
     }
   },
   computed: {

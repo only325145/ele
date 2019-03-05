@@ -26,8 +26,8 @@
         <Split></Split>
         <div class="rating">
           <h1>商品评价</h1>
-          <Ratingselect :desc="desc" :ratings="food.ratings" @selectType="typeChange" @content="ifContent"></Ratingselect>
-        </div> 
+        </div>
+        <Ratingselect :desc="desc" :ratings="food.ratings" @selectType="typeChange" @content="ifContent"></Ratingselect> 
         <div class="ratingList">
           <ul v-show="food.ratings && food.ratings.length">
             <li v-for="(rating,key) in getrate" :key="key" v-show="ifShow(rating.text)" class="list">
@@ -71,7 +71,7 @@ export default {
         negative: "吐槽"
       },
       type: 2,
-      showContent: false,
+      onlyContent: false,
     };
   },
   methods: {
@@ -90,10 +90,10 @@ export default {
       this.type = type;
     },
     ifContent(value) {
-      this.showContent = value;
+      this.onlyContent = value;
     },
     ifShow(text) {
-      if(this.showContent && !text){
+      if(this.onlyContent && !text){
         return false;
       }
       else{
@@ -216,9 +216,8 @@ export default {
           color: rgb(77,85,93)
           font-weight: 200
           line-height: .48rem
-      .rating 
-        padding: .36rem .36rem 0 .36rem
-        border-bottom: 2px solid rgba(7,17,27,0.1) 
+      .rating
+        margin: .36rem 0 0 .36rem
       .ratingList
         margin: 0 .36rem
         .list

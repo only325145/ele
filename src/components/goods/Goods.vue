@@ -91,7 +91,6 @@ export default {
       return foods;
     }
   },
-
   components: {
     Shopcar,
     Carcontrol,
@@ -99,7 +98,7 @@ export default {
   },
   methods: {
     emptycar() {
-      //子集Shopcar点击事件事件传递上来的自定义事件，对selectFoods数据进行操作。购物车详细列表的存在依赖于count，所以将count全部设置为0。
+      //子集Shopcar点击事件传递上来的自定义事件，对selectFoods数据进行操作。购物车详细列表的存在依赖于count，所以将count全部设置为0。
       this.selectFoods.forEach(food => {
         food.count = 0;
       });

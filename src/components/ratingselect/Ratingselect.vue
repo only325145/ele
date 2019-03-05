@@ -76,6 +76,8 @@ export default {
 
 <style lang="stylus" scoped>
   .ratingselect
+    padding: 0 .36rem
+    border-bottom: 2px solid rgba(7,17,27,0.1) 
     .type
       padding: .36rem 0
       border-bottom: 1px solid rgba(7,17,27,0.1) 

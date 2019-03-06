@@ -35,16 +35,33 @@
       <div class="section">{{seller.bulletin}}</div>
     </div>
     <ul class="activity">
-      <li class="a-list" v-for="(value,key) in seller.supports" :key="key">
+      <li class="a-list" v-for="(value,key) in seller.supports" :key="key" v-show="seller.supports">
         <span class="icon" :class="classMap[value.type]"></span>
         <span class="describ">{{value.description}}</span>
       </li>
     </ul>
+    <Split></Split>
+    <div class="seller-img">
+      <h1>商家实景</h1>
+      <ul class="img-box">
+        <li v-for="(value,key) in seller.pics" :key="key" class="img-list">
+          <img :src="value" class="seller-pic"/>
+        </li>
+      </ul>
+    </div>
+    <Split></Split>
+    <div class="seller-infor">
+      <h1 class="infor-title">商家信息</h1>
+      <ul>
+        <li class="infor-item" v-for="(infor,key) in seller.infos" :key="key">{{infor}}</li>
+      </ul>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
+import BScroll from "better-scroll";
 import Star from "../star/Star.vue";
 import Axios from "axios";
 import Split from "../split/Split.vue";
@@ -72,6 +89,8 @@ export default {
   },
   mounted() {
     this.getSelllerInfor();
+    let wrapper = document.querySelector(".seller");
+    this.sellerScroll = new BScroll(wrapper, {click: true});
   },
   created() {
     this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
@@ -146,9 +165,10 @@ export default {
         .icon
           display: inline-block
           margin-right: .12rem
-          width: 16px
-          height: 16px
+          width: .32rem
+          height: .32rem
           vertical-align: top
+          background-size: .32rem .32rem 
           &.decrease
             bg-image("img/decrease_1")
           &.discount
@@ -164,4 +184,25 @@ export default {
           font-weight: 200
           color: rgb(7,17,27)
           line-height: .32rem
+    .seller-img
+      padding: .36rem 0 .36rem .36rem
+      .img-box
+        display: flex
+        margin-top: .24rem
+        .img-list
+          margin-right: .12rem
+          .seller-pic
+            width: 2.4rem
+            height: 1.8rem
+    .seller-infor
+      padding: .36rem .36rem 0 .36rem
+      .infor-title
+        margin-bottom: .24rem
+      ul
+        .infor-item
+          padding: .32rem .24rem
+          border-top: 1px solid rgba(7,17,27,0.1)
+          font-size: .24rem
+          line-height: .32rem
+          color: rgb(7,17,27)
 </style>

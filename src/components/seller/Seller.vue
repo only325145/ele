@@ -122,8 +122,9 @@ export default {
         font-size: 0
         .star
           display: inline-block
-          vertical-align: top
+          vertical-align: bottom
           margin-right: .16rem
+          margin-top: .1rem
         .text
           display: inline-block
           margin-right: .24rem

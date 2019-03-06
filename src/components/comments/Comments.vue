@@ -10,12 +10,12 @@
         <div class="right">
           <div class="star">
             <span class="title">商品评价</span>
-            <Star :size="36" :score="seller.foodScore" class="star"></Star>
+            <Star :size="36" :score="seller.foodScore" class="c-star"></Star>
             <span class="score">{{seller.foodScore}}</span>
           </div>
           <div class="star">
             <span class="title">服务态度</span> 
-            <Star :size="36" :score="seller.serviceScore" class="star"></Star>
+            <Star :size="36" :score="seller.serviceScore" class="c-star"></Star>
             <span class="score">{{seller.serviceScore}}</span>
           </div>
           <div class="time">
@@ -29,7 +29,7 @@
       <div class="content">
         <ul>
           <li  class="list" v-for="(rate, key) in ratings" :key="key" v-show="selectContent(rate.rateType,rate.text)">
-            <img :src="ratings.avatar" class="pic"/>
+            <img :src="rate.avatar" class="pic"/>
             <div class="infor">
               <div class="user">{{rate.username}}</div>
               <div class="showStar">
@@ -60,7 +60,6 @@ export default {
   name: "comments",
   data() {
     return {
-      goods: [],
       seller: Object,
       ratings: [],
       type: 2,
@@ -74,7 +73,6 @@ export default {
     getGoodsInfoSucc(res) {
       res = res.data;
       if (res.ret && res.data) {
-        this.goods = res.data.goods;
         this.seller = res.data.seller;
         this.ratings = res.data.ratings;
       }
@@ -158,7 +156,7 @@ export default {
           vertical-align: top
           font-size: .24rem
           color: rgb(7, 17, 27)
-        .star
+        .c-star
           display: inline-block
           margin: 0 12px
           vertical-align: bottom 

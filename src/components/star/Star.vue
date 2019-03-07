@@ -68,7 +68,7 @@ export default {
         width: .3rem
         height: .3rem
         margin-right: .12rem
-        background-size: .15rem .15rem
+        background-size: .3rem .3rem
         &:last-child
           margin-right: 0
         &.on
@@ -79,10 +79,10 @@ export default {
           bg-image("imgs/star36_off")
     &.star-24
       .star-item
-        width: .1rem
-        height: .1rem
+        width: .2rem
+        height: .2rem
         margin-right: .03rem
-        background-size: .1rem .1rem
+        background-size: .2rem .2rem
         &:last-child
           margin-right: 0
         &.on

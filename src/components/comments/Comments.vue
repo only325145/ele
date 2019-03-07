@@ -159,7 +159,7 @@ export default {
         .c-star
           display: inline-block
           margin: 0 12px
-          vertical-align: bottom 
+          vertical-align: top
         .score
           display: inline-block
           line-height: .36rem
@@ -182,6 +182,7 @@ export default {
         width: .56rem
         height: .56rem
         margin-right: .24rem
+        border-radius: 50%
       .infor
         flex: 1
         .user

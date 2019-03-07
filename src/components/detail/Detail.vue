@@ -4,6 +4,9 @@
       <div class="foodContent">
         <div class="img">
           <img class="pic" :src="food.icon" />
+          <div class="back" @click="goback">
+            <span class="iconfont">&#xe749;</span>
+          </div>
         </div>
         <div class="content">
           <h1 class="foodName">{{food.name}}</h1>
@@ -31,7 +34,7 @@
         <div class="ratingList">
           <ul v-show="food.ratings && food.ratings.length">
             <li v-for="(rating,key) in getrate" :key="key" v-show="ifShow(rating.text)" class="list">
-              <div class="time">20190228</div>
+              <div class="time">{{rating.rateTime | dataFormat("yyyy-mm-dd")}}</div>
               <div class="user">
                 <span>{{rating.username}}</span>
                 <img class="avatar" :src="rating.avatar"/>
@@ -41,12 +44,9 @@
               </div>
             </li>
           </ul>
-          <div v-show="!food.rating || !food.ratings.length">暂无评论</div>  <!-- 如果没有评价就显示该区域 -->
+          <div v-show="!food.rating || !food.ratings.length" class="none">暂无评论</div>  <!-- 如果没有评价就显示该区域 -->
         </div>  
       </div>  
-    </div>
-    <div class="back" @click="goback">
-      <span class="iconfont">&#xe749;</span>
     </div>
   </div>
 </template>
@@ -99,6 +99,24 @@ export default {
       else{
         return true;  //没有选择“只看有内容的评价” ，全部评论都显示
       }
+    }
+  },
+  filters: {
+    dataFormat(input, pattern) {
+      var dt = new Date(input);
+      var y = dt.getFullYear();
+      var m = (dt.getMonth() + 1).toString().padStart(2, '0');
+      var d = dt.getDate().toString().padStart(2, '0');
+      if (pattern.toLowerCase() === 'yyyy-mm-dd') {
+        return `${y}-${m}-${d}`;
+      } else {
+        // 获取时分秒
+        var hh = dt.getHours().toString().padStart(2, '0');
+        var mm = dt.getMinutes().toString().padStart(2, '0');
+        var ss = dt.getSeconds().toString().padStart(2, '0');
+        return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+      }
+ 
     }
   },
   computed: {
@@ -159,6 +177,20 @@ export default {
           top: 0
           bottom: 0
           width: 100%
+        .back
+          position: absolute
+          top: .2rem
+          left: .2rem
+          width: .7rem
+          height: .7rem
+          padding: .1rem
+          border-radius: 100%
+          background-color: rgba(0,0,0,0.3)
+          text-align: center
+          .iconfont
+            font-size: .5rem
+            color: #fff
+            line-height: .7rem
       .content
         position: relative
         padding: .36rem
@@ -196,7 +228,7 @@ export default {
           border-radius: .3rem
           text-align: center
           line-height: .36rem
-          font-size: .12rem
+          font-size: .24rem
           color: rgb(255,255,255)
           background-color: rgb(0,160,220)
         .select
@@ -250,18 +282,7 @@ export default {
                 color: rgb(0,160,220)
               &.icon-ai46
                 color: rgb(147,153,159)
-  .back
-    position: fixed 
-    top: .2rem
-    left: .2rem
-    width: .7rem
-    height: .7rem
-    padding: .1rem
-    border-radius: 100%
-    background-color: rgba(0,0,0,0.3)
-    text-align: center
-    .iconfont
-      font-size: .5rem
-      color: #fff
-      line-height: .7rem
+        .none
+          padding: .24rem
+          color: rgb(147,153,159)   
 </style>

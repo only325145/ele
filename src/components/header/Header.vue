@@ -139,7 +139,7 @@ export default {
         text-align: center
         .count
           vertical-align: top
-          font-size: .12rem
+          font-size: .24rem
     .bwrapper
       position: relative
       height: .56rem

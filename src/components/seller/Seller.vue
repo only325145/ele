@@ -28,6 +28,10 @@
           </div>
         </li>
       </ul>
+      <div class="favorite" @click="changefavorite">
+        <span class="iconfont" :class="{'active':favorite}">&#xe602;</span>
+        <span class="icon-text">{{ifcollect}}</span>
+      </div>
     </div>
     <Split></Split>
     <div class="notice">
@@ -70,11 +74,21 @@ export default {
   data() {
     return {
       seller: [],
+      favorite: false
     }
   },
   components: {
     Star,
     Split
+  },
+  computed: {
+    ifcollect() {
+      if(this.favorite===true){
+        return "已收藏";
+      }else{
+        return "收藏"
+      }
+    }
   },
   methods: {
     getSelllerInfor() {
@@ -86,6 +100,9 @@ export default {
         this.seller = res.data.seller;
       }
     },
+    changefavorite() {
+      this.favorite = !this.favorite;
+    }
   },
   mounted() {
     this.getSelllerInfor();
@@ -110,6 +127,7 @@ export default {
   overflow: hidden 
   .sellerContent
     .sell-infor
+      position: relative
       padding: .36rem
       .title
         font-size: .28rem
@@ -122,9 +140,8 @@ export default {
         font-size: 0
         .star
           display: inline-block
-          vertical-align: bottom
+          vertical-align: top
           margin-right: .16rem
-          margin-top: .1rem
         .text
           display: inline-block
           margin-right: .24rem
@@ -151,6 +168,24 @@ export default {
             color: rgb(7,17,27)
             .num
               font-size: .48rem
+      .favorite
+        position: absolute
+        right: .36rem
+        top: .36rem
+        width: 1rem
+        text-align: center
+        .iconfont
+          display: block
+          margin-bottom: .08rem
+          font-size: .48rem
+          color: #d4d6d9
+          line-height: .48rem
+          &.active
+            color: rgb(240,20,20)
+        .icon-text
+          line-height: 10px
+          font-size: 10px
+          color: rgb(77, 85, 93)
     .notice
       padding: .36rem .36rem 0 .36rem
       .section

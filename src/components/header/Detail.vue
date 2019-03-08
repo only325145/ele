@@ -23,11 +23,12 @@
             <div class="line"></div>
           </div>
           <div class="content">
-            <p>{{seller.bulletin}}{{seller.bulletin}}{{seller.bulletin}}{{seller.bulletin}}</p>
+            <p>{{seller.bulletin}}</p>
           </div>
       </div>
+      <div class="detailClose iconfont" @click="close">&#xe630;</div>
     </div>
-    <div class="detailClose iconfont" @click="close">&#xe630;</div>
+    <!-- <div class="detailClose iconfont" @click="close">&#xe630;</div> -->
   </div>
 </template>
 
@@ -62,10 +63,11 @@ export default {
   overflow: auto
   background-color: rgba(7,17,27,0.8)
   .detailWrapper
-    box-sizing: border-box
-    min-height: 100%
-    padding: 1.28rem .72rem
+    position: relative
+    min-height: 100%    //高度由内容撑开，固定最小高度和视窗一样，这样保证内容少的时候close区块还是可以因margin:-1.28rem显示在视窗底部
+    width: 100%
     .detailMain
+      padding: 1.28rem .72rem 1.28rem .72rem
       .name
         font-size: .32rem
         font-weight: 700
@@ -121,15 +123,19 @@ export default {
         font-weight: 200
         color: rgb(255,255,255)
         line-height: .48rem
-        height: 5.5rem
-        overflow: auto
-  .detailClose
-    position: absolute
-    bottom: .64rem
-    left: 0
-    right: 0
+    .detailClose
+      position: absolute
+      bottom: .32rem
+      width: 100%
+      font-size: .50rem
+      color: rgba(255,255,255,0.5)
+      line-height: .64rem
+      text-align: center 
+  /* .detailClose
+    margin-top: -1.28rem
+    width: 100%
     font-size: .50rem
     color: rgba(255,255,255,0.5)
     line-height: .64rem
-    text-align: center
+    text-align: center */
 </style>

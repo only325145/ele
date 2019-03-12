@@ -47,11 +47,13 @@
     <Split></Split>
     <div class="seller-img">
       <h1>商家实景</h1>
-      <ul class="img-box">
-        <li v-for="(value,key) in seller.pics" :key="key" class="img-list">
-          <img :src="value" class="seller-pic"/>
-        </li>
-      </ul>
+      <div class="imgwapper">
+        <ul class="img-box" ref="imgbox">
+          <li v-for="(value,key) in seller.pics" :key="key" class="img-list">
+            <img :src="value" class="seller-pic"/>
+          </li>
+        </ul>
+      </div>
     </div>
     <Split></Split>
     <div class="seller-infor">
@@ -102,16 +104,38 @@ export default {
     },
     changefavorite() {
       this.favorite = !this.favorite;
-    }
+    },
+    _initImg(){ 
+      if(this.seller.pics){
+        let picWidth = 120;
+        let margin = 6;
+        let width = (picWidth + margin) * this.seller.pics.length - margin;
+        this.$refs.imgbox.style.width = width + 'px'; 
+        this.$nextTick(()=>{
+          if (!this.picScroll) {
+            this.imgScroll = new BScroll(".imgwapper", {
+              scrollX: true,
+              eventPassthrough: "vertical"
+            });
+          }
+          else{
+            this.imgScroll.refresh();
+          }
+        }); 
+      }
+    },
+  },
+  created() {
+    this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
+    // class名称和每个特定图标编号相对应
   },
   mounted() {
     this.getSelllerInfor();
     let wrapper = document.querySelector(".seller");
     this.sellerScroll = new BScroll(wrapper, {click: true});
   },
-  created() {
-    this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
-    // class名称和每个特定图标编号相对应
+  updated() {
+    this._initImg();   //写在mounted里不能获取到数据，通过在ajax执行函数和mounted里打印this.seller查看得知，因为ajax为异步执行，mounted时还并没有将获取的元素赋值给this.seller
   }
 }
 </script>
@@ -221,15 +245,23 @@ export default {
           color: rgb(7,17,27)
           line-height: .32rem
     .seller-img
-      padding: .36rem 0 .36rem .36rem
-      .img-box
-        display: flex
+      padding: .36rem
+      width: 100%
+      .imgwapper
+        width: 100%
+        overflow: hidden
+        white-space: nowrap
         margin-top: .24rem
-        .img-list
-          margin-right: .12rem
-          .seller-pic
-            width: 2.4rem
-            height: 1.8rem
+        .img-box
+          font-size: 0
+          .img-list
+            display: inline-block
+            margin-right: .12rem
+            &:last-child
+                margin-right: 0
+            .seller-pic
+              width: 2.4rem
+              height: 1.8rem
     .seller-infor
       padding: .36rem .36rem 0 .36rem
       .infor-title
